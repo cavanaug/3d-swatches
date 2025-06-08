@@ -10,8 +10,7 @@ OPENSCAD='/mnt/c/Program Files/OPENSCAD (Nightly)/OPENSCAD.exe'
 TEMPLATE='./openscad/_filament_swatch_template.scad'
 PARAM='./openscad/_filament_swatch_template.json'
 
-#PARAM_TEMP='./.temp_cli.json'
-PARAM_TEMP=$(mktemp)
+PARAM_TEMP="./tmp/param_cli.$$.json"
 
 echo "Arguments $#"
 
