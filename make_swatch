@@ -1,0 +1,38 @@
+#!/bin/bash
+if [[ $# -lt 3 ]]; then
+  echo "Error: Not enough arguments"
+  echo
+  echo 'Usage: make_swatch <brand> <material> <color> [type]'
+  exit 1
+fi
+OPENSCAD='/mnt/c/Program Files/OPENSCAD (Nightly)/OPENSCAD.exe'
+
+TEMPLATE='./openscad/_filament_swatch_template.scad'
+PARAM='./openscad/_filament_swatch_template.json'
+
+#PARAM_TEMP='./.temp_cli.json'
+PARAM_TEMP=$(mktemp)
+
+echo "Arguments $#"
+
+brand="${1^^}"
+#brand="${brand// /_}"
+brand="${brand// /}"
+
+material="${2^^}"
+
+color="${3^^}"
+if [[ $# -lt 4 ]]; then
+  type="Custom"
+else
+  type="${4^^}"
+  typef="_${4^^}"
+fi
+
+filename="swatch-${brand// /_}_${material// /_}_${color// /_}${typef// /_}.stl"
+filename="${filename// /_}"
+
+echo "Processing ${filename}"
+jq ".parameterSets.cli.material = \"${material}\" | .parameterSets.cli.materialBrand = \"Custom\" | .parameterSets.cli.line1 = \"${brand}\" | .parameterSets.cli.materialColor = \"${color}\" | .parameterSets.cli.line2B = \"${color}\" | .parameterSets.cli.materialType = \"${type}\" " ${PARAM} >${PARAM_TEMP}
+echo "${OPENSCAD}" -o "${filename}" -p ${PARAM_TEMP} -P cli ${TEMPLATE}
+"${OPENSCAD}" -o "${filename}" -p ${PARAM_TEMP} -P cli ${TEMPLATE}
