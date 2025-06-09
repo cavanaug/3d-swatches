@@ -11,6 +11,7 @@ TEMPLATE='./openscad/_filament_swatch_template.scad'
 PARAM='./openscad/_filament_swatch_template.json'
 
 PARAM_TEMP="./tmp/param_cli.$$.json"
+mkdir -p ./tmp
 
 echo "Arguments $#"
 
