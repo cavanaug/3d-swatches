@@ -13,7 +13,7 @@ PARAM='./openscad/_filament_swatch_template.json'
 PARAM_TEMP="./tmp/param_cli.$$.json"
 mkdir -p ./tmp
 
-echo "Arguments $#"
+#echo "Arguments $#"
 
 brand="${1^^}"
 #brand="${brand// /_}"
@@ -32,7 +32,10 @@ fi
 filename="swatch-${brand// /_}_${material// /_}_${color// /_}${typef// /_}.stl"
 filename="${filename// /_}"
 
-echo "Processing ${filename}"
+echo "Creating ${filename}"
+echo
 jq ".parameterSets.cli.material = \"${material}\" | .parameterSets.cli.materialBrand = \"Custom\" | .parameterSets.cli.line1 = \"${brand}\" | .parameterSets.cli.materialColor = \"${color}\" | .parameterSets.cli.line2B = \"${color}\" | .parameterSets.cli.materialType = \"${type}\" " ${PARAM} >${PARAM_TEMP}
-echo "${OPENSCAD}" -o "${filename}" -p ${PARAM_TEMP} -P cli ${TEMPLATE}
-"${OPENSCAD}" -o "${filename}" -p ${PARAM_TEMP} -P cli ${TEMPLATE}
+#echo "${OPENSCAD}" -o "${filename}" -p ${PARAM_TEMP} -P cli ${TEMPLATE}
+echo win-run "${OPENSCAD}" -o "${filename}" -p "${PARAM_TEMP}" -P cli "${TEMPLATE}"
+#"${OPENSCAD}" -o "${filename}" -p ${PARAM_TEMP} -P cli ${TEMPLATE}
+win-run "${OPENSCAD}" -o "${filename}" -p "${PARAM_TEMP}" -P cli "${TEMPLATE}"
